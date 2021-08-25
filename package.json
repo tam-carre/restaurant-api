@@ -1,0 +1,32 @@
+{
+  "name": "restaurant-api",
+  "version": "1.0.0",
+  "description": "A simplified API that can create users, book and view reservations.",
+  "main": "build/index.js",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "migrate": "./node_modules/.bin/node-pg-migrate",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "restaurant",
+    "reservation",
+    "api"
+  ],
+  "author": "Tam CARRE",
+  "license": "MIT",
+  "dependencies": {
+    "@marblejs/core": "^3.5.1",
+    "@marblejs/middleware-body": "^3.5.1",
+    "@marblejs/middleware-logger": "^3.5.1",
+    "fp-ts": "^2.11.1",
+    "node-pg-migrate": "^5.10.0",
+    "ramda": "^0.27.1",
+    "rxjs": "^6.6.7",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.3.5"
+  },
+  "devDependencies": {
+    "@types/ramda": "^0.27.44"
+  }
+}
