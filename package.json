@@ -20,6 +20,7 @@
     "@marblejs/middleware-body": "^3.5.1",
     "@marblejs/middleware-logger": "^3.5.1",
     "fp-ts": "^2.11.1",
+    "fp-ts-ramda": "^0.1.7",
     "node-pg-migrate": "^5.10.0",
     "ramda": "^0.27.1",
     "rxjs": "^6.6.7",

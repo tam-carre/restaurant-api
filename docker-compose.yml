@@ -20,8 +20,12 @@ services:
   postgres:
     image: postgres:11
     ports:
-      - "34321:5432"
+      - "34321:34321"
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: pass
       POSTGRES_DB: db
+
+  migration:
+    image: app:latest
+    command: ["./wait-for-it/wait-for-it.sh", "postgres:34321", "--", "npm", "run", "migrate", "up"]
