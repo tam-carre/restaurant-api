@@ -21,16 +21,14 @@ export const getCustomer = (
   TOreturnIfValid (Customer)
 )
 
-///////////////////////////////////////////////////////////////////////////////
-
-type Customer = t.TypeOf<typeof Customer>
-const Customer = t.type ({
+export type Customer = t.TypeOf<typeof Customer>
+export const Customer = t.type ({
   email: t.string,
   name: t.string
 })
 
-type CustomerCreationProps = Customer
+export type CustomerCreationProps = Customer
 
-interface CustomerGetterProps {
+export interface CustomerGetterProps {
   email: string
 }

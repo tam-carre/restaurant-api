@@ -5,7 +5,7 @@
   "main": "build/index.js",
   "scripts": {
     "start": "ts-node src/index.ts",
-    "migrate": "./node_modules/.bin/node-pg-migrate",
+    "migrate": "DATABASE_URL=postgres://user:pass@postgres:5432/db ./node_modules/.bin/node-pg-migrate",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -18,9 +18,11 @@
   "dependencies": {
     "@marblejs/core": "^3.5.1",
     "@marblejs/middleware-body": "^3.5.1",
+    "@marblejs/middleware-io": "^3.5.1",
     "@marblejs/middleware-logger": "^3.5.1",
     "fp-ts": "^2.11.1",
     "fp-ts-ramda": "^0.1.7",
+    "fp-ts-rxjs": "^0.6.15",
     "node-pg-migrate": "^5.10.0",
     "ramda": "^0.27.1",
     "rxjs": "^6.6.7",

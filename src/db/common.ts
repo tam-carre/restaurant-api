@@ -15,7 +15,7 @@ export const TOdidAffectAnyRow: (
   q: TO.TaskOption<QueryResult<any>>
 ) => T.Task<boolean> = flow (
   TO.map (flow (prop ('rowCount'), gt (0))),
-  TO.getOrElse (() => T.of (false))
+  TO.getOrElse (() => T.of <boolean> (false))
 )
 
 export const TOgetFirstRow: (
@@ -40,7 +40,7 @@ export const TOreturnArrayIfValid = <T extends t.Props> (
     A.every (flow (codec.decode, isRight)),
     TO.of)
   ),
-  TO.map (({dataArray, isValid}) => isValid ? dataArray : null)
+  TO.chain (({dataArray, isValid}) => isValid ? TO.some (dataArray) : TO.none)
 )
 
 export interface PaginatedQuery {

@@ -15,7 +15,6 @@ exports.up = pgm => {
     restaurantTable: {
       type: 'integer',
       notNull: true,
-      check: 'restaurantTable > 0 AND restaurantTable <= 4'
     },
     arrivalDate: {
       type: 'date',
@@ -24,9 +23,6 @@ exports.up = pgm => {
     arrivalTime: {
       type: 'time',
       notNull: true,
-      check: 'arrivalTime > TIME 18:59:59 AND arrivalTime < 23:00:01'
     }
   })
-
-  pgm.createIndex('reservations', 'customers')
 }
