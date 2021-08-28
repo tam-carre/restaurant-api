@@ -3,8 +3,8 @@ import * as td from 'io-ts-types'
 import * as TE from 'fp-ts/lib/TaskEither'
 import {pipe} from 'fp-ts/lib/function'
 import {TEquery, TEreturnArrayIfValid} from './common'
-import {getTime} from '../util'
 const {abs} = Math
+const getTime = (hhmmss: string) => new Date (`1970-01-01 ${hhmmss}`).getTime ()
 
 // In a complete system, this would not be hardcoded
 const TABLES = [1, 2, 3, 4, 5]

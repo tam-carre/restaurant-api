@@ -4,11 +4,6 @@ import { bodyParser$ } from '@marblejs/middleware-body'
 import { api$ } from './api/api.effects'
 
 export const listener = httpListener ({
-  middlewares: [
-    logger$ (),
-    bodyParser$ ()
-  ],
-  effects: [
-    api$
-  ]
+  middlewares: [logger$ (), bodyParser$ ()],
+  effects: [api$]
 })
