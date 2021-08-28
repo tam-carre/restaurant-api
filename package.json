@@ -21,7 +21,6 @@
     "@marblejs/middleware-io": "^3.5.1",
     "@marblejs/middleware-logger": "^3.5.1",
     "fp-ts": "^2.11.1",
-    "fp-ts-ramda": "^0.1.7",
     "fp-ts-rxjs": "^0.6.15",
     "io-ts-types": "^0.5.16",
     "node-pg-migrate": "^5.10.0",

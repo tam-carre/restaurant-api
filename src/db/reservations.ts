@@ -3,7 +3,6 @@ import * as td from 'io-ts-types'
 import * as TE from 'fp-ts/lib/TaskEither'
 import {pipe} from 'fp-ts/lib/function'
 import {TEquery, TEreturnArrayIfValid} from './common'
-import {prop} from 'fp-ts-ramda'
 import {getTime} from '../util'
 const {abs} = Math
 
@@ -34,7 +33,7 @@ export const createReservation = (
       : TEquery ([customer, restaurantTable, arrivalDate, arrivalTime]) (query)
     )
   )),
-  TE.map (prop ('rowCount')),
+  TE.map (result => result.rowCount),
   TE.mapLeft (err => err.message.includes ('reservations_customer_fkey')
     ? new Error ('No customer with this email address was found.')
     : err
@@ -51,7 +50,7 @@ export const getReservations = (
   ORDER BY id ASC
   OFFSET $3 LIMIT $4`,
   TEquery ([fromDate, toDate, offset, limit]),
-  TE.map (prop ('rows')),
+  TE.map (result => result.rows),
   TEreturnArrayIfValid (FullReservation),
 )
 
@@ -87,7 +86,7 @@ const isTableFree = (
   FROM reservations
   WHERE "arrivalDate" = $1 AND "restaurantTable" = $2`,
   TEquery ([arrivalDate, restaurantTable]),
-  TE.map (prop ('rows')),
+  TE.map (result => result.rows),
   TEreturnArrayIfValid (Reservation),
   TE.map (reservations => reservations.every (
     res => abs (getTime (res.arrivalTime) - getTime (arrivalTime)) > HOUR
