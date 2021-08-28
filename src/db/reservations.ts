@@ -42,19 +42,32 @@ export const createReservation = (
 )
 
 export const getReservations = (
-  {fromDate, toDate}: ReservationListing
-): TE.TaskEither<Error, Reservation[]> => pipe (
-  `SELECT customer, "restaurantTable", "arrivalDate", "arrivalTime",
+  {fromDate, toDate, offset = 0, limit = 50}: ReservationListing
+): TE.TaskEither<Error, FullReservation[]> => pipe (
+  `SELECT id, customer, name, "restaurantTable", "arrivalDate", "arrivalTime"
   FROM reservations
-  INNER JOIN customers ON customers.email = reservations.customer
-  WHERE "arrivalDate" BETWEEN $1 AND $2`,
-  TEquery ([fromDate, toDate]),
+  INNER JOIN customers c ON c.email = reservations.customer
+  WHERE "arrivalDate" BETWEEN $1 AND $2
+  ORDER BY id ASC
+  OFFSET $3 LIMIT $4`,
+  TEquery ([fromDate, toDate, offset, limit]),
   TE.map (prop ('rows')),
-  TEreturnArrayIfValid (Reservation),
+  TEreturnArrayIfValid (FullReservation),
 )
 
 export type Reservation = t.TypeOf<typeof Reservation>
 export const Reservation = t.type ({
+  customer: t.string,
+  restaurantTable: t.number,
+  arrivalDate: t.union ([td.date, t.string]),
+  arrivalTime: t.string
+})
+
+// couldn't make t.intersection type infer properly so this code isn't DRY
+export type FullReservation = t.TypeOf<typeof FullReservation>
+export const FullReservation = t.type ({
+  id: t.number,
+  name: t.string,
   customer: t.string,
   restaurantTable: t.number,
   arrivalDate: t.union ([td.date, t.string]),
@@ -83,6 +96,8 @@ const isTableFree = (
 
 export type ReservationListing = t.TypeOf<typeof ReservationListing>
 export const ReservationListing = t.type ({
+  offset: t.union ([t.number, t.undefined]),
+  limit: t.union ([t.number, t.undefined]),
   fromDate: t.string,
-  toDate: t.string
+  toDate: t.string,
 })

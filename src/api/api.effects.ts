@@ -1,5 +1,4 @@
 import {r, combineRoutes} from '@marblejs/core'
-import {mapTo} from 'rxjs/operators'
 import {Customer, createCustomer} from '../db/customers'
 import {createReservation, getReservations, Reservation, ReservationListing} from '../db/reservations'
 import {create$, getData$} from './common'
@@ -31,16 +30,7 @@ const getReservations$ = r.pipe (
   }))
 )
 
-const home$ = r.pipe (
-  r.matchPath ('/'),
-  r.matchType ('GET'),
-  r.useEffect (req$ => req$.pipe (
-     mapTo ({body: 'Hello, world!!'})
-  ))
-)
-
 export const api$ = combineRoutes ('/', [
-  home$,
   createCustomer$,
   createReservation$,
   getReservations$

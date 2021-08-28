@@ -39,11 +39,6 @@ export const TEreturnArrayIfValid =
   <T extends t.Props> (codec: t.TypeC<T>) => <TEArrayValidator<T>>
     TEreturnIfValid (A.every (flow (codec.decode, isRight)))
 
-export interface PaginatedQuery {
-  offset: number
-  limit: number
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 const pool = new Pool ()
