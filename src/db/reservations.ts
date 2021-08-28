@@ -14,10 +14,12 @@ const CLOSING = getTime ('24:00:00')
 export const createReservation = (
   {customer, restaurantTable, arrivalDate, arrivalTime}: Reservation
 ): TE.TaskEither<Error, number> => pipe (
-  TE.of (`INSERT INTO
-  reservations(customer, "restaurantTable", "arrivalDate", "arrivalTime")
-  VALUES($1, $2, $3, $4)
-  ON CONFLICT DO NOTHING`),
+  TE.of (`
+    INSERT INTO
+    reservations(customer, "restaurantTable", "arrivalDate", "arrivalTime")
+    VALUES($1, $2, $3, $4)
+    ON CONFLICT DO NOTHING
+  `),
   TE.chain (query => pipe (
     isTableFree ({restaurantTable, arrivalDate, arrivalTime}),
     TE.chain (isFree =>
