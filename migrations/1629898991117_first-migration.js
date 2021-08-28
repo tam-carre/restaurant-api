@@ -12,15 +12,15 @@ exports.up = pgm => {
       references: '"customers"',
       onDelete: 'cascade',
     },
-    restaurantTable: {
+    "restaurantTable": {
       type: 'integer',
       notNull: true,
     },
-    arrivalDate: {
+    "arrivalDate": {
       type: 'date',
       notNull: true
     },
-    arrivalTime: {
+    "arrivalTime": {
       type: 'time',
       notNull: true,
     }

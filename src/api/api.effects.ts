@@ -1,30 +1,37 @@
 import {r, combineRoutes} from '@marblejs/core'
-import {mapTo, mergeMap} from 'rxjs/operators'
-import { requestValidator$ } from '@marblejs/middleware-io'
-import { Customer, createCustomer } from '../db/customers'
-import * as Ob from 'fp-ts-rxjs/Observable'
-import {flow} from 'fp-ts/lib/function'
-import * as T from 'fp-ts/lib/Task'
-import {prop} from 'fp-ts-ramda'
+import {mapTo} from 'rxjs/operators'
+import {Customer, createCustomer} from '../db/customers'
+import {createReservation, getReservations, Reservation, ReservationListing} from '../db/reservations'
+import {create$, getData$} from './common'
 
 const createCustomer$ = r.pipe (
-  r.matchPath ('/user/create'),
+  r.matchPath ('/customers/create'),
   r.matchType ('POST'),
-  r.useEffect (req$ => req$.pipe (
-    requestValidator$ ({ body: Customer }),
-    mergeMap (flow (
-      prop ('body'),
-      createCustomer,
-      T.map (success => success
-        ? { body: 'Successfully created customer.' }
-        : { status: 400, body: 'A customer with this email address exists.' }
-      ),
-      Ob.fromTask
-    )),
-  ))
+  r.useEffect (create$ ({
+    validator: Customer,
+    creator: createCustomer,
+  }))
 )
 
-export const home$ = r.pipe (
+const createReservation$ = r.pipe (
+  r.matchPath ('/reservations/create'),
+  r.matchType ('POST'),
+  r.useEffect (create$ ({
+    validator: Reservation,
+    creator: createReservation
+  }))
+)
+
+const getReservations$ = r.pipe (
+  r.matchPath ('/reservations/list'),
+  r.matchType ('POST'),
+  r.useEffect (getData$ ({
+    validator: ReservationListing,
+    getter: getReservations
+  }))
+)
+
+const home$ = r.pipe (
   r.matchPath ('/'),
   r.matchType ('GET'),
   r.useEffect (req$ => req$.pipe (
@@ -35,4 +42,6 @@ export const home$ = r.pipe (
 export const api$ = combineRoutes ('/', [
   home$,
   createCustomer$,
+  createReservation$,
+  getReservations$
 ])
