@@ -1,8 +1,8 @@
 import * as t from 'io-ts'
-import * as TO from 'fp-ts/TaskOption'
+import * as TE from 'fp-ts/lib/TaskEither'
 import * as T from 'fp-ts/Task'
 import {pipe} from 'fp-ts/lib/function'
-import {TOdidAffectAnyRow, TOquery, TOreturnArrayIfValid} from './common'
+import {TEdidAffectAnyRow, TEquery, TEreturnArrayIfValid} from './common'
 import {prop} from 'fp-ts-ramda'
 
 export const createReservation = (
@@ -12,20 +12,20 @@ export const createReservation = (
   reservations(customer, restaurantTable, arrivalDate, arrivalTime)
   VALUES($1, $2, $3, $4)
   ON CONFLICT DO NOTHING`,
-  TOquery ([customerEmail, restaurantTable, arrivalDateTime, arrivalDateTime]),
-  TOdidAffectAnyRow
+  TEquery ([customerEmail, restaurantTable, arrivalDateTime, arrivalDateTime]),
+  TEdidAffectAnyRow
 )
 
 export const getReservations = (
   {fromDate, toDate}: ReservationListingProps
-): TO.TaskOption<Reservation[]> => pipe (
+): TE.TaskEither<Error, Reservation[]> => pipe (
   `SELECT customer, restaurantTable, arrivalDate, arrivalTime,
   FROM reservations
   INNER JOIN customers ON customers.email = reservations.customer
   WHERE "arrivalDate" BETWEEN $1 AND $2`,
-  TOquery ([fromDate, toDate]),
-  TO.map (prop ('rows')),
-  TOreturnArrayIfValid (Reservation),
+  TEquery ([fromDate, toDate]),
+  TE.map (prop ('rows')),
+  TEreturnArrayIfValid (Reservation),
 )
 
 ///////////////////////////////////////////////////////////////////////////////

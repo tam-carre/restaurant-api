@@ -5,7 +5,7 @@
   "main": "build/index.js",
   "scripts": {
     "start": "ts-node src/index.ts",
-    "migrate": "DATABASE_URL=postgres://user:pass@postgres:5432/db ./node_modules/.bin/node-pg-migrate",
+    "migrate": "sleep 2 && DATABASE_URL=postgres://user:pass@postgres:5432/db ./node_modules/.bin/node-pg-migrate",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

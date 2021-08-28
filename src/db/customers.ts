@@ -1,24 +1,24 @@
 import * as t from 'io-ts'
 import * as T from 'fp-ts/Task'
-import * as TO from 'fp-ts/TaskOption'
-import {TOdidAffectAnyRow, TOgetFirstRow, TOquery, TOreturnIfValid} from './common'
+import * as TE from 'fp-ts/TaskEither'
+import {TEgetFirstRow, TEreturnObjectIfValid, TEquery, TEdidAffectAnyRow} from './common'
 import {pipe} from 'fp-ts/lib/function'
 
 export const createCustomer = (
   {name, email}: CustomerCreationProps
 ): T.Task<boolean> => pipe (
   'INSERT INTO customers(name, email) VALUES($1, $2) ON CONFLICT DO NOTHING',
-  TOquery ([name, email]),
-  TOdidAffectAnyRow
+  TEquery ([name, email]),
+  TEdidAffectAnyRow
 )
 
 export const getCustomer = (
   {email}: CustomerGetterProps
-): TO.TaskOption<Customer> => pipe (
+): TE.TaskEither<Error, Customer> => pipe (
   'SELECT email, name FROM customers WHERE "email"=$1',
-  TOquery ([email]),
-  TOgetFirstRow,
-  TOreturnIfValid (Customer)
+  TEquery ([email]),
+  TEgetFirstRow,
+  TEreturnObjectIfValid (Customer)
 )
 
 export type Customer = t.TypeOf<typeof Customer>

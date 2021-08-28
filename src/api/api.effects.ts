@@ -1,8 +1,7 @@
 import {r, combineRoutes} from '@marblejs/core'
 import {mapTo, mergeMap} from 'rxjs/operators'
-import { map } from 'rxjs/operators'
 import { requestValidator$ } from '@marblejs/middleware-io'
-import { Customer, createCustomer } from '../db/users'
+import { Customer, createCustomer } from '../db/customers'
 import * as Ob from 'fp-ts-rxjs/Observable'
 import {flow} from 'fp-ts/lib/function'
 import * as T from 'fp-ts/lib/Task'
@@ -18,7 +17,7 @@ const createCustomer$ = r.pipe (
       createCustomer,
       T.map (success => success
         ? { body: 'Successfully created customer.' }
-        : { status: 400, body: 'There was a problem creating this customer' }
+        : { status: 400, body: 'A customer with this email address exists.' }
       ),
       Ob.fromTask
     )),

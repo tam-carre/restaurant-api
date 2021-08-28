@@ -10,6 +10,11 @@ services:
       DATABASE_URL: postgres://user:pass@postgres:5432/db
       NODE_ENV: development
       PORT: 3000
+      PGUSER: user
+      PGHOST: postgres
+      PGPASSWORD: pass
+      PGDATABASE: db
+      PGPORT: 5432
     ports:
       - "3000:3000"
     command: npm start
