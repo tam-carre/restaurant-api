@@ -64,17 +64,6 @@ export const Reservation = t.type ({
   arrivalTime: t.string
 })
 
-// couldn't make t.intersection type infer properly so this code isn't DRY
-export type FullReservation = t.TypeOf<typeof FullReservation>
-export const FullReservation = t.type ({
-  id: t.number,
-  name: t.string,
-  customer: t.string,
-  restaurantTable: t.number,
-  arrivalDate: t.union ([td.date, t.string]),
-  arrivalTime: t.string
-})
-
 ///////////////////////////////////////////////////////////////////////////////
 
 const HOUR = 1000*60*60 - 1000
@@ -102,3 +91,15 @@ export const ReservationListing = t.type ({
   fromDate: t.string,
   toDate: t.string,
 })
+
+// couldn't make t.intersection type infer properly so this code isn't DRY
+type FullReservation = t.TypeOf<typeof FullReservation>
+const FullReservation = t.type ({
+  id: t.number,
+  name: t.string,
+  customer: t.string,
+  restaurantTable: t.number,
+  arrivalDate: t.union ([td.date, t.string]),
+  arrivalTime: t.string
+})
+
