@@ -38,7 +38,7 @@ const getDocs$ = r.pipe (
   r.useEffect (req$ => req$.pipe (
     mapTo ({
       headers: { "Content-Type": "text/html" },
-      body: fs.createReadStream ('./docs/index.html')
+      body: fs.readFileSync ('./docs/index.html')
     })
   ))
 )
