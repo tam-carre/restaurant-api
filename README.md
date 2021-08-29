@@ -68,16 +68,16 @@ HTTP/1.1 400 Bad Request
 $ for ((i=1;i<=5;i++)); do req '/reservations/create' '{"customer": "maria@gmail.com", "restaurantTable": '$i', "arrivalDate": "2021-08-29", "arrivalTime": "19:00:00"}'; done
 
 # Let's list reservations now.
-$ req '/reservations/list' '{"fromDate": "2021-01-01", "toDate": "2022-12-01"}'
+$ curl -i "http://0.0.0.0:3000/reservations/list?fromDate=2021-01-01&toDate=2022-12-01" 
 HTTP/1.1 200 OK
 [{"id":1,"customer":"maria@gmail.com","name":"Maria","restaurantTable":1,"arrivalDate":"2021-08-30T00:00:00.000Z","arrivalTime":"19:15:00"},{"id":3,"customer":"maria@gmail.com","name":"Maria","restaurantTable":1,"arrivalDate":"2021-08-29T00:00:00.000Z","arrivalTime":"19:00:00"},{"id":4,"customer":"maria@gmail.com","name":"Maria","restaurantTable":2,"arrivalDate":"2021-08-29T00:00:00.000Z","arrivalTime":"19:00:00"},{"id":5,"customer":"maria@gmail.com","name":"Maria","restaurantTable":3,"arrivalDate":"2021-08-29T00:00:00.000Z","arrivalTime":"19:00:00"},{"id":6,"customer":"maria@gmail.com","name":"Maria","restaurantTable":4,"arrivalDate":"2021-08-29T00:00:00.000Z","arrivalTime":"19:00:00"},{"id":7,"customer":"maria@gmail.com","name":"Maria","restaurantTable":5,"arrivalDate":"2021-08-29T00:00:00.000Z","arrivalTime":"19:00:00"}]%  
 
 # Pagination is implemented via offset and limit. Try this.
-$ req '/reservations/list' '{"fromDate": "2021-01-01", "toDate": "2022-12-01", "limit": 2}'
+$ curl -i "http://0.0.0.0:3000/reservations/list?fromDate=2021-01-01&toDate=2022-12-01&limit=2" 
 HTTP/1.1 200 OK
 [{"id":1,"customer":"maria@gmail.com","name":"Maria","restaurantTable":1,"arrivalDate":"2021-08-30T00:00:00.000Z","arrivalTime":"19:15:00"},{"id":3,"customer":"maria@gmail.com","name":"Maria","restaurantTable":1,"arrivalDate":"2021-08-29T00:00:00.000Z","arrivalTime":"19:00:00"}]%  
 
-$ req '/reservations/list' '{"fromDate": "2021-01-01", "toDate": "2022-12-01", "limit": 2, "offset": 2}'
+$ curl -i "http://0.0.0.0:3000/reservations/list?fromDate=2021-01-01&toDate=2022-12-01&limit=2&offset=2"
 HTTP/1.1 200 OK
 [{"id":4,"customer":"maria@gmail.com","name":"Maria","restaurantTable":2,"arrivalDate":"2021-08-29T00:00:00.000Z","arrivalTime":"19:00:00"},{"id":5,"customer":"maria@gmail.com","name":"Maria","restaurantTable":3,"arrivalDate":"2021-08-29T00:00:00.000Z","arrivalTime":"19:00:00"}]% 
 ```
