@@ -9,7 +9,7 @@ Make sure `docker` and `docker-compose` are installed, and run:
 $ git clone https://github.com/tam-carre/restaurant-api
 $ cd restaurant-api
 $ docker-compose up --build # depending on your docker install, you might have to run this as superuser/sudo
-                          # if you wish to run it in the background, add the -d flag
+                            # if you wish to run it in the background, add the -d flag
 ```
 
 ## Features
@@ -17,9 +17,11 @@ $ docker-compose up --build # depending on your docker install, you might have t
 Once the server is running, try for yourself the existing endpoints by running the following commands.
 Output is included here for convenience.
 
+You can also consult the OpenAPI docs by visiting http://0.0.0.0:3000/.
+
 ```sh
 # Utility function to make POST requests cleaner
-$ req() {curl -X POST -H "Content-Type: application/json" -d "$2" -i "http://0.0.0.0:3000$1" }
+$ req() { curl -X POST -H "Content-Type: application/json" -d "$2" -i "http://0.0.0.0:3000$1" }
 
 # Let's create our first customer!
 $ req '/customers/create' '{"name": "Maria", "email": "maria@gmail.com"}'
