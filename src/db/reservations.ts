@@ -3,6 +3,7 @@ import * as td from 'io-ts-types'
 import * as TE from 'fp-ts/lib/TaskEither'
 import {pipe} from 'fp-ts/lib/function'
 import {APIError, TEquery, TEreturnArrayIfValid} from './common'
+import {optional} from '../api/common'
 const {abs} = Math
 const getTime = (hhmmss: string) => new Date (`1970-01-01 ${hhmmss}`).getTime ()
 
@@ -86,10 +87,10 @@ const isTableFree = (
 
 export type ReservationListing = t.TypeOf<typeof ReservationListing>
 export const ReservationListing = t.type ({
-  offset: t.union ([t.number, t.undefined]),
-  limit: t.union ([t.number, t.undefined]),
   fromDate: t.string,
   toDate: t.string,
+  offset: optional (td.NumberFromString),
+  limit: optional (td.NumberFromString),
 })
 
 // couldn't make t.intersection type infer properly so this code isn't DRY

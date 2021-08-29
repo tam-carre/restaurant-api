@@ -22,9 +22,9 @@ export const create$ = (props: CreationProps): HttpEffect => req$ => req$.pipe (
 )
 
 export const getData$ = (props: GetterProps): HttpEffect => req$ => req$.pipe (
-  requestValidator$ ({body: props.validator}),
+  requestValidator$ ({query: props.validator}),
   mergeMap (req => pipe (
-    req.body,
+    req.query,
     props.getter,
     TE.foldW (
       err => T.of (formatError (err)),
@@ -33,6 +33,17 @@ export const getData$ = (props: GetterProps): HttpEffect => req$ => req$.pipe (
     Ob.fromTask
   ))
 )
+
+export const optional = <T extends t.Any>(
+  type: T,
+  name = `${type.name} | undefined`
+): t.UnionType<
+  [T, t.UndefinedType],
+  t.TypeOf<T> | undefined,
+  t.OutputOf<T> | undefined,
+  t.InputOf<T> | undefined
+> =>
+  t.union<[T, t.UndefinedType]>([type, t.undefined], name)
 
 ///////////////////////////////////////////////////////////////////////////////
 
