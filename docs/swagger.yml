@@ -1,0 +1,150 @@
+swagger: "2.0"
+info:
+  description: "A simplified restaurant API made with MarbleJS, fp-ts and PostgreSQL"
+  version: "1.0.0"
+  title: "Simplified Restaurant API"
+basePath: "/"
+schemes:
+- "http"
+servers:
+  - url: http://0.0.0.0:3000/
+paths:
+  /customers/create:
+    post:
+      summary: "Create a new customer, uniquely identified by email"
+      operationId: "/customers/create"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "Customer"
+        required: true
+        schema:
+          $ref: "#/definitions/Customer"
+      responses:
+        "200":
+          description: "Creation successful"
+        "400":
+          description: "Invalid input"
+        "409":
+          description: "Customer with this email address already exists"
+  /reservations/create:
+    post:
+      summary: "Create a new reservation"
+      operationId: "/reservations/create"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "ReservationCreation"
+        required: true
+        schema:
+          $ref: "#/definitions/ReservationCreation"
+      responses:
+        "200":
+          description: "Creation successful"
+        "400":
+          description: "Invalid input"
+        "409":
+          description: "Customer with this email address already exists"
+        "422":
+          description: "Restaurant closed at this time or no customer with this email address found"
+  /reservations/list:
+    get:
+      summary: "Returns reservations between dates"
+      operationId: "/reservations/list"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "fromDate"
+        in: "query"
+        required: true
+        type: "string"
+        format: "date"
+        description: "Example: 2021-01-28"
+
+      - name: "toDate"
+        in: "query"
+        required: true
+        type: "string"
+        format: "date"
+        description: "Example: 2021-12-19"
+        
+      - name: "offset"
+        in: "query"
+        required: false
+        type: "integer"
+        default: 0
+        
+      - name: "limit"
+        in: "query"
+        required: false
+        type: "integer"
+        default: 50
+
+      responses:
+        "200":
+          description: "Successful"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Reservation"
+        "400":
+          description: "Invalid input"
+definitions:
+  Customer:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+        format: "email"
+      name:
+        type: "string"
+    xml:
+      name: "Customer"
+  ReservationCreation:
+    type: "object"
+    properties:
+      customer:
+        type: "string"
+        format: "email"
+      restaurantTable:
+        type: "integer"
+        example: 1
+      arrivalDate:
+        type: "string"
+        format: "date"
+      arrivalTime:
+        type: "string"
+        format: "time"
+        example: "19:15:00"
+    xml:
+      name: "ReservationCreation"
+  Reservation:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      customer:
+        type: "string"
+        format: "email"
+      name:
+        type: "string"
+        example: "Jules"
+      restaurantTable:
+        type: "integer"
+        example: 1
+      arrivalDate:
+        type: "string"
+        format: "date-time"
+        example: "2021-08-30T00:00:00.000Z"
+      arrivalTime:
+        type: "string"
+        format: "time"
+        example: "19:15:00"
+    xml:
+      name: "Reservation"

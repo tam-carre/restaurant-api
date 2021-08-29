@@ -1,7 +1,9 @@
 import {r, combineRoutes} from '@marblejs/core'
+import {mapTo} from 'rxjs/operators'
 import {Customer, createCustomer} from '../db/customers'
 import {createReservation, getReservations, Reservation, ReservationListing} from '../db/reservations'
 import {create$, getData$} from './common'
+import fs from 'fs'
 
 const createCustomer$ = r.pipe (
   r.matchPath ('/customers/create'),
@@ -30,8 +32,20 @@ const getReservations$ = r.pipe (
   }))
 )
 
+const getDocs$ = r.pipe (
+  r.matchPath ('/'),
+  r.matchType ('GET'),
+  r.useEffect (req$ => req$.pipe (
+    mapTo ({
+      headers: { "Content-Type": "text/html" },
+      body: fs.createReadStream ('./docs/index.html')
+    })
+  ))
+)
+
 export const api$ = combineRoutes ('/', [
   createCustomer$,
   createReservation$,
-  getReservations$
+  getReservations$,
+  getDocs$,
 ])
