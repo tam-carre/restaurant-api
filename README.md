@@ -17,7 +17,7 @@ $ docker-compose up --build # depending on your docker install, you might have t
 Once the server is running, try for yourself the existing endpoints by running the following commands.
 Output is included here for convenience.
 
-You can also consult the OpenAPI docs by visiting `http://0.0.0.0:3000/`.
+You can also consult the OpenAPI docs by visiting http://0.0.0.0:3000/.
 
 ```sh
 # Utility function to make POST requests cleaner
