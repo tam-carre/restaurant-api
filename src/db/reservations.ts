@@ -72,7 +72,7 @@ const TEerr = (code: number, msg: string) => TE.left (APIError (code, msg))
 
 const isTableFree = (
   {restaurantTable, arrivalDate, arrivalTime}: Omit<Reservation, 'customer'>
-): TE.TaskEither<Error, boolean> => pipe (
+): TE.TaskEither<APIError, boolean> => pipe (
   `SELECT customer, "restaurantTable", "arrivalDate", "arrivalTime"
   FROM reservations
   WHERE "arrivalDate" = $1 AND "restaurantTable" = $2`,
