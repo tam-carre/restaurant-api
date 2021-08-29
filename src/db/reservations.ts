@@ -2,7 +2,7 @@ import * as t from 'io-ts'
 import * as td from 'io-ts-types'
 import * as TE from 'fp-ts/lib/TaskEither'
 import {pipe} from 'fp-ts/lib/function'
-import {TEquery, TEreturnArrayIfValid} from './common'
+import {APIError, TEquery, TEreturnArrayIfValid} from './common'
 const {abs} = Math
 const getTime = (hhmmss: string) => new Date (`1970-01-01 ${hhmmss}`).getTime ()
 
@@ -13,7 +13,7 @@ const CLOSING = getTime ('24:00:00')
 
 export const createReservation = (
   {customer, restaurantTable, arrivalDate, arrivalTime}: Reservation
-): TE.TaskEither<Error, number> => pipe (
+): TE.TaskEither<APIError, number> => pipe (
   TE.of (`
     INSERT INTO
     reservations(customer, "restaurantTable", "arrivalDate", "arrivalTime")
@@ -24,27 +24,27 @@ export const createReservation = (
     isTableFree ({restaurantTable, arrivalDate, arrivalTime}),
     TE.chain (isFree =>
         !isFree
-      ? TEerr ('This table is not free at this time.')
+      ? TEerr (409, 'This table is not free at this time.')
 
       : TABLES.every (table => table !== restaurantTable)
-      ? TEerr (`Table ${restaurantTable} does not exist.`)
+      ? TEerr (422, `Table ${restaurantTable} does not exist.`)
 
       : (getTime (arrivalTime) < OPENING) || (getTime (arrivalTime) > CLOSING)
-      ? TEerr ("The restaurant is closed at this time.")
+      ? TEerr (422, 'The restaurant is closed at this time.')
 
       : TEquery ([customer, restaurantTable, arrivalDate, arrivalTime]) (query)
     )
   )),
   TE.map (result => result.rowCount),
   TE.mapLeft (err => err.message.includes ('reservations_customer_fkey')
-    ? new Error ('No customer with this email address was found.')
+    ? APIError (422, 'No customer with this email address was found.')
     : err
   )
 )
 
 export const getReservations = (
   {fromDate, toDate, offset = 0, limit = 50}: ReservationListing
-): TE.TaskEither<Error, FullReservation[]> => pipe (
+): TE.TaskEither<APIError, FullReservation[]> => pipe (
   `SELECT id, customer, name, "restaurantTable", "arrivalDate", "arrivalTime"
   FROM reservations
   INNER JOIN customers c ON c.email = reservations.customer
@@ -68,7 +68,7 @@ export const Reservation = t.type ({
 
 const HOUR = 1000*60*60 - 1000
 
-const TEerr = (message: string) => TE.left (new Error (message))
+const TEerr = (code: number, msg: string) => TE.left (APIError (code, msg))
 
 const isTableFree = (
   {restaurantTable, arrivalDate, arrivalTime}: Omit<Reservation, 'customer'>

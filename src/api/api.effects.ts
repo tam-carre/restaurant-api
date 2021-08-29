@@ -23,7 +23,7 @@ const createReservation$ = r.pipe (
 
 const getReservations$ = r.pipe (
   r.matchPath ('/reservations/list'),
-  r.matchType ('POST'),
+  r.matchType ('GET'),
   r.useEffect (getData$ ({
     validator: ReservationListing,
     getter: getReservations
