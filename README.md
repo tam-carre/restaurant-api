@@ -9,7 +9,7 @@ Make sure `docker` and `docker-compose` are installed, and run:
 $ git clone https://github.com/tam-carre/restaurant-api
 $ cd restaurant-api
 $ docker-compose up --build # depending on your docker install, you might have to run this as superuser/sudo
-                          # if you wish to run it in the background, add the -d flag
+                            # if you wish to run it in the background, add the -d flag
 ```
 
 ## Features
