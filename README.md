@@ -21,7 +21,7 @@ You can also consult the OpenAPI docs by visiting http://0.0.0.0:3000/.
 
 ```sh
 # Utility function to make POST requests cleaner
-$ req() {curl -X POST -H "Content-Type: application/json" -d "$2" -i "http://0.0.0.0:3000$1" }
+$ req() { curl -X POST -H "Content-Type: application/json" -d "$2" -i "http://0.0.0.0:3000$1" }
 
 # Let's create our first customer!
 $ req '/customers/create' '{"name": "Maria", "email": "maria@gmail.com"}'
