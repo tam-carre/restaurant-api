@@ -5,7 +5,9 @@ import * as A from 'fp-ts/Array'
 import {flow, pipe} from 'fp-ts/lib/function'
 import {isRight} from 'fp-ts/lib/Either'
 
-export const TEquery = (values: any[]) => (query: string): TE.TaskEither<APIError, QueryResult<any>> =>
+export const TEquery = (
+  values: any[]) => (query: string
+): TE.TaskEither<APIError, QueryResult<any>> =>
   TE.tryCatch (
     () => pool.query (query, A.map (String) (values)),
     err => APIError (400, `SQL query failed: ${err}`)
@@ -50,5 +52,5 @@ const TEreturnIfValid = <T extends t.Props> (
     predicate,
     isValid => isValid
       ? TE.right (data)
-      : TE.left (APIError (400, 'Unexpected query result shape.')))
-  )
+      : TE.left (APIError (400, 'Unexpected query result shape.'))
+  ))
