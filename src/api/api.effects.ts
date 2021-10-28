@@ -6,7 +6,7 @@ import {create$, getData$} from './common'
 import fs from 'fs'
 
 const createCustomer$ = r.pipe (
-  r.matchPath ('/customers/create'),
+  r.matchPath ('/customers'),
   r.matchType ('POST'),
   r.useEffect (create$ ({
     validator: Customer,
@@ -15,7 +15,7 @@ const createCustomer$ = r.pipe (
 )
 
 const createReservation$ = r.pipe (
-  r.matchPath ('/reservations/create'),
+  r.matchPath ('/reservations'),
   r.matchType ('POST'),
   r.useEffect (create$ ({
     validator: Reservation,
@@ -24,7 +24,7 @@ const createReservation$ = r.pipe (
 )
 
 const getReservations$ = r.pipe (
-  r.matchPath ('/reservations/list'),
+  r.matchPath ('/reservations'),
   r.matchType ('GET'),
   r.useEffect (getData$ ({
     validator: ReservationListing,
